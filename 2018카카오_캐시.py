@@ -7,17 +7,24 @@
 cacheSize = 3
 cities=["Jeju", "Pangyo", "Seoul", "NewYork", "LA", "Jeju", "Pangyo", "Seoul", "NewYork", "LA"]
 #LRU 캐시교체 알고리즘
-
-cache = []
-for ref in cities:
-  if not ref in cache:
-    if len(cache) < cacheSize:
-        cache.append(ref)
-    else:
-        cache.pop(0)
-        cache.append(ref)
-  else:
-    cache.pop(cache.index(ref))
-    cache.append(ref)
-
-print(cache)
+from collections import deque
+def solution(cacheSize,cities ):
+    i=[''] * cacheSize
+    cache = deque(i, maxlen=cacheSize)
+    answer = 0
+    for city in cities:
+        city = city.lower()
+        if city in cache:
+            cache.remove(city)
+            cache.append(city)
+            answer += 1
+        else:
+            cache.append(city)
+            answer += 5
+    return answer
+testcase = [
+    [3, ["Jeju", "Pangyo", "Seoul", "NewYork", "LA", "Jeju", "Pangyo", "Seoul", "NewYork", "LA"]],
+    [3, ["Jeju", "Pangyo", "Seoul", "Jeju", "Pangyo", "Seoul", "Jeju", "Pangyo", "Seoul"]]
+]
+for case in testcase:
+    print(solution(case[0], case[1]))
